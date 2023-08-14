@@ -15,6 +15,9 @@ out/
 *.msi
 *.jar
 
+# test results
+coverage/
+
 # IDE/Editor files
 .vscode/
 .idea/

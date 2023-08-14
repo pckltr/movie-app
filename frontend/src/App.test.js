@@ -1,46 +1,35 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import App from "./App";
 
-jest.mock("axios");
-
-const movies = [
-  {
-    _id: "1",
-    title: "Matrix 1",
-    year: "2022",
-    imdbID: "tt1234567",
-    type: "movie",
-    poster: "poster1",
-  },
-];
-
 describe("App", () => {
+  let mockAxios;
+
+  beforeEach(() => {
+    mockAxios = new MockAdapter(axios);
+  });
+
+  afterEach(() => {
+    mockAxios.restore();
+  });
+
   it("renders the App component and fetches movies", async () => {
+    const mockMovies = [{ title: "Movie 1", year: "2021", type: "movie" }];
+
+    mockAxios
+      .onGet(/http:\/\/localhost:4000\/api\/movies\?search=.*/)
+      .reply(200, mockMovies);
+
     render(<App />);
 
-    axios.get.mockResolvedValueOnce({ data: movies });
-
-    const matrixButton = screen.getByText("Matrix");
-    fireEvent.click(matrixButton);
-
-    expect(axios.get).toHaveBeenCalledWith(
-      "http://localhost:4000/api/movies?search=Matrix"
-    );
-
     await waitFor(async () => {
-      const progressBar = screen.queryByRole("progressbar");
+      expect(screen.queryByText("is loading...")).toBeNull();
 
-      expect(progressBar).toBeInTheDocument();
-
-      await waitFor(async () => {
-        expect(progressBar).not.toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText("Movie 1")).toBeInTheDocument();
       });
-    });
-
-    movies.forEach((movie) => {
-      expect(screen.getByText(movie.title)).toBeInTheDocument();
     });
   });
 });

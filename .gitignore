@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+
+# Node.js
+node_modules/
+package-lock.json
+.env
+
+# Build artifacts
+build/
+dist/
+out/
+*.exe
+*.msi
+*.jar
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# macOS
+.DS_Store
+
+# Thumbnails
+*.thumb
+
+# Backups
+*.bak
+
+# Swap files
+*.swp
+*~
+
+# Temporary files
+*.tmp

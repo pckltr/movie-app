@@ -19,7 +19,6 @@ out/
 */coverage/
 
 # IDE/Editor files
-.vscode/
 .idea/
 *.suo
 *.ntvs*
